@@ -192,6 +192,13 @@ const gitGenerators: Record<string, Fig.Generator> = {
     postProcess: postProcessBranches,
   },
 
+  // All branches (sorted by most recent commit)
+  remoteLocalBranchesSortedByMostRecent: {
+    script:
+      "{ git --no-optional-locks branch --no-color --sort=-committerdate ; git --no-optional-locks branch -r --no-color --sort=-committerdate; } | cat",
+    postProcess: postProcessBranches,
+  },
+
   // custom generator to display local branches by default or
   // remote branches if '-r' flag is used. See branch -d for use
   localOrRemoteBranches: {
@@ -4234,7 +4241,7 @@ const completionSpec: Fig.Spec = {
           description: "Branch, file, tag or commit to switch to",
           isOptional: true,
           generators: [
-            gitGenerators.remoteLocalBranches,
+            gitGenerators.remoteLocalBranchesSortedByMostRecent,
             gitGenerators.tags,
             { template: "filepaths" },
           ],
